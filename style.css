@@ -34,10 +34,9 @@ textarea {
 
 canvas, video {
   display: none;
-  width: 320px;
-  height: 240px;
-  max-width: 100%;
-  aspect-ratio: 4 / 3;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   margin: 15px auto;
   border: 2px solid #000;
