@@ -81,13 +81,34 @@ captureBtn.onclick = () => {
 
 // 📸 Capture from camera & play sound
 function captureFromVideo() {
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  context.drawImage(video, 0, 0);
+  const selectedLayout = layout.value;
+
+  if (selectedLayout === 'square') {
+    canvas.width = 320;
+    canvas.height = 320;
+    context.drawImage(video, 0, 0, 320, 320);
+    canvas.className = '';
+  } else if (selectedLayout === 'strip') {
+    canvas.width = 320;
+    canvas.height = 960;
+    const photoHeight = 300;
+    for (let i = 0; i < 3; i++) {
+      context.drawImage(video, 0, i * photoHeight, 320, photoHeight);
+    }
+    canvas.className = '';
+  } else if (selectedLayout === 'portrait') {
+    canvas.width = 320;
+    canvas.height = 640;
+    const photoHeight = 200;
+    for (let i = 0; i < 3; i++) {
+      context.drawImage(video, 0, i * photoHeight, 320, photoHeight);
+    }
+    canvas.className = 'portrait';
+  }
+
   canvas.style.display = 'block';
   video.style.display = 'none';
 
-  // 🔊 Play cassette click
   cassetteSound.currentTime = 0;
   cassetteSound.play();
 
@@ -109,8 +130,8 @@ document.querySelectorAll('.filters button').forEach(button => {
 
 function applyFilter(filter) {
   if (!currentImage) return;
+  context.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
 
-  context.drawImage(currentImage, 0, 0);
   let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
   if (filter === 'bw') {
