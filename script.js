@@ -15,7 +15,6 @@ const cassetteSound = document.getElementById('cassette-sound');
 let currentImage = null;
 let currentFilter = 'none';
 
-// 🎥 Start camera
 document.getElementById('start-camera').onclick = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -28,7 +27,6 @@ document.getElementById('start-camera').onclick = async () => {
   }
 };
 
-// 🖼️ Upload image
 upload.onchange = (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -49,13 +47,11 @@ upload.onchange = (e) => {
   reader.readAsDataURL(file);
 };
 
-// ⏱️ Get selected timer
 function getSelectedTimer() {
   const selected = document.querySelector('input[name="timer"]:checked');
   return parseInt(selected.value);
 }
 
-// ⏳ Countdown before capture
 function startCountdown(seconds, callback) {
   countdownEl.textContent = seconds;
   const interval = setInterval(() => {
@@ -69,7 +65,6 @@ function startCountdown(seconds, callback) {
   }, 1000);
 }
 
-// 📸 Capture button click
 captureBtn.onclick = () => {
   const delay = getSelectedTimer();
   if (delay > 0) {
@@ -79,37 +74,13 @@ captureBtn.onclick = () => {
   }
 };
 
-// 📸 Capture from camera & play sound
 function captureFromVideo() {
-  const selectedLayout = layout.value;
-
-  if (selectedLayout === 'square') {
-    canvas.width = 320;
-    canvas.height = 320;
-    context.drawImage(video, 0, 0, 320, 320);
-    canvas.className = '';
-  } else if (selectedLayout === 'strip') {
-    canvas.width = 320;
-    canvas.height = 960;
-    const photoHeight = 300;
-    for (let i = 0; i < 3; i++) {
-      context.drawImage(video, 0, i * photoHeight, 320, photoHeight);
-    }
-    canvas.className = '';
-  } else if (selectedLayout === 'portrait') {
-    canvas.width = 320;
-    canvas.height = 640;
-    const photoHeight = 200;
-    for (let i = 0; i < 3; i++) {
-      context.drawImage(video, 0, i * photoHeight, 320, photoHeight);
-    }
-    canvas.className = 'portrait';
-  }
-
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  context.drawImage(video, 0, 0);
   canvas.style.display = 'block';
   video.style.display = 'none';
 
-  cassetteSound.currentTime = 0;
   cassetteSound.play();
 
   const img = new Image();
@@ -120,7 +91,6 @@ function captureFromVideo() {
   };
 }
 
-// 🎨 Apply selected filter
 document.querySelectorAll('.filters button').forEach(button => {
   button.onclick = () => {
     currentFilter = button.dataset.filter;
@@ -130,8 +100,8 @@ document.querySelectorAll('.filters button').forEach(button => {
 
 function applyFilter(filter) {
   if (!currentImage) return;
-  context.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
 
+  context.drawImage(currentImage, 0, 0);
   let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
   if (filter === 'bw') {
@@ -153,7 +123,6 @@ function applyFilter(filter) {
   context.putImageData(imageData, 0, 0);
 }
 
-// 💾 Download with note
 downloadBtn.onclick = () => {
   const finalCanvas = createStripWithNote();
   const link = document.createElement('a');
@@ -162,7 +131,6 @@ downloadBtn.onclick = () => {
   link.click();
 };
 
-// 📁 Save strip to gallery
 saveGalleryBtn.onclick = () => {
   const strip = createStripWithNote();
   const dataURL = strip.toDataURL();
@@ -172,7 +140,6 @@ saveGalleryBtn.onclick = () => {
   alert("Saved to gallery!");
 };
 
-// 🖼️ Show saved strips
 viewGalleryBtn.onclick = () => {
   gallerySection.innerHTML = '';
   const gallery = JSON.parse(localStorage.getItem('nostalgicGallery') || '[]');
@@ -183,7 +150,6 @@ viewGalleryBtn.onclick = () => {
   });
 };
 
-// 🧾 Add note below strip
 function createStripWithNote() {
   const finalCanvas = document.createElement('canvas');
   finalCanvas.width = canvas.width;
