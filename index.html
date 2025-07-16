@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nostalgic Photobooth</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/retro-icon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>Nostalgic Photobooth</h1>
+
+  <div class="controls">
+    <button id="start-camera">Access Camera</button>
+    <input type="file" accept="image/*" id="upload-photo" />
+  </div>
+
+  <div class="timer-options">
+    <label><input type="radio" name="timer" value="0" checked /> No Timer</label>
+    <label><input type="radio" name="timer" value="3" /> 3s</label>
+    <label><input type="radio" name="timer" value="5" /> 5s</label>
+    <label><input type="radio" name="timer" value="10" /> 10s</label>
+  </div>
+
+  <div class="preview">
+    <video id="camera" autoplay></video>
+    <canvas id="photo-canvas"></canvas>
+  </div>
+
+  <div class="actions">
+    <button id="capture">Capture</button>
+    <div id="countdown"></div>
+  </div>
+
+  <div class="filters">
+    <button data-filter="none">Original</button>
+    <button data-filter="bw">Black & White</button>
+    <button data-filter="retro">Retro</button>
+    <button data-filter="90s">90s Look</button>
+  </div>
+
+  <textarea id="note" maxlength="250" placeholder="Write your nostalgic note..."></textarea>
+
+  <div class="layout-options">
+    <label>Layout:
+      <select id="layout">
+        <option value="strip">Vertical Strip</option>
+        <option value="square">Square</option>
+      </select>
+    </label>
+  </div>
+
+  <button id="download">Download Strip</button>
+  <button id="save-gallery">Save to Gallery</button>
+  <button id="view-gallery">View Gallery</button>
+
+  <div id="gallery" class="gallery-section"></div>
+
+  <audio id="cassette-sound" src="sounds/camera-click.mp3" preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
